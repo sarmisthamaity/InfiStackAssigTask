@@ -1,0 +1,30 @@
+{
+  "name": "infistackassigtask",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sarmisthamaity/InfiStackAssigTask.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/sarmisthamaity/InfiStackAssigTask/issues"
+  },
+  "homepage": "https://github.com/sarmisthamaity/InfiStackAssigTask#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "jwt-decode": "^3.1.2",
+    "mongoose": "^6.0.11",
+    "nodemon": "^2.0.14"
+  }
+}
