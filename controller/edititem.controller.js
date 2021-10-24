@@ -1,18 +1,19 @@
 const itemsModel = require('../models/item.model');
 
-const editItem = async(req, res) => {
+const editItem = async (decoded, req, res, next) => {
     const { itemId, price, Quantity } = req.body;
-    try{
+    try {
         const editDatas = {
             price: price,
             Quantity: Quantity
         };
-        const updateItem = await itemsModel.findOneAndUpdate({_id: itemId}, editDatas);
+        const updateItem = await itemsModel
+            .findOneAndUpdate({ _id: itemId }, editDatas);
         return res.status(202).send({
             status: 202,
             updateItem
         });
-    }catch(err){
+    } catch (err) {
         console.log(err);
         return res.status(500).send({
             status: 500,
@@ -22,4 +23,4 @@ const editItem = async(req, res) => {
 };
 
 
-module.exports = {editItem};
+module.exports = { editItem };

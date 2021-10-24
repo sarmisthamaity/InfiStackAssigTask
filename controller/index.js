@@ -1,4 +1,6 @@
-module.exports.userController = require('../controller/signup.controller');
-module.exports.loginController = require('../controller/login.controller');
-module.exports.itemsController = require('../controller/item.controller');
-module.exports.editItemController = require('../controller/edititem.controller');
+module.exports.userController = require('./signup.controller');
+module.exports.loginController = require('./login.controller');
+module.exports.itemsController = require('./item.controller');
+module.exports.editItemController = require('./edititem.controller');
+module.exports.itemlistController = require('./itemlist.controller');
+module.exports.deleteItemController = require('./delitem.controller');

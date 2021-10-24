@@ -5,17 +5,36 @@ const bcrypt = require('bcrypt');
 const salt = process.env.ROUNDSALT
 
 const userSignUp = async(req, res) => {
+    const files = req.files;
+    var datas = req.body
+    files.forEach(element => {
+        if(element.fieldname == "profilePicture"){
+            datas.profilePicture = element.originalname
+
+        } if(element.fieldname == "image"){
+            datas.image = element.originalname
+        }
+    })
     const userSchema = Joi.object({
-        // ProfilePicture: Joi.string().required().min().max(2),
-        UserName: Joi.string().required().min(3).max(20),
+        userName: Joi.string().required().min(3).max(20),
         email: Joi.string().required(),
         Password: Joi.string().alphanum().min(8).max(20).required(),
         gender: Joi.string().required(),
         Dob: Joi.date().required(),
         Qualification: Joi.string().alphanum().required(),
-        phonenumber: Joi.string().required().max(10)
+        phonenumber: Joi.string().required().max(10).min(10)
     });
-    let SchemaValidation = userSchema.validate(req.body);
+
+    const data = {
+        userName: datas.userName,
+        email: datas.email,
+        Password: datas.Password,
+        gender: datas.gender,
+        Dob: datas.Dob,
+        Qualification: datas.Qualification,
+        phonenumber: datas.phonenumber
+    };
+    let SchemaValidation = userSchema.validate(data);
     if(SchemaValidation.error){
         return res.status(400).send({
             status: 400,
@@ -32,25 +51,26 @@ const userSignUp = async(req, res) => {
                 message: 'email or phone number exists'
             });
         } else{
-
         };
         const hashpassword = await bcrypt.hash(SchemaValidation.Password, 12);
         const userData = {
-            // ProfilePicture: SchemaValidation.ProfilePicture,
-            UserName: SchemaValidation.UserName,
+            userName: SchemaValidation.userName,
             email: SchemaValidation.email,
             Password: hashpassword,
             gender: SchemaValidation.gender,
             Dob: SchemaValidation.Dob,
             Qualification: SchemaValidation.Qualification,
-            phonenumber: SchemaValidation.phonenumber
+            phonenumber: SchemaValidation.phonenumber,
+            profilePicture: datas.profilePicture,
+            image: datas.image
         };
+
         const saveUserData = await userModel.create(userData);
         return res.status(200).send({
             status: 200,
             message: 'data saved',
             saveUserData
-        })
+        });
     } catch(err){
         console.log(err);
         return res.status(500).send({

@@ -1,6 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-
 module.exports = async(req, res, next) => {
     try{
         let token = '';
@@ -14,10 +13,10 @@ module.exports = async(req, res, next) => {
             token = req.headers.authorization.split(' ')[1];
         }else{
             token = req.headers.authorization;
-        };
+        };''
         const decoded = await jwt.verify(token, process.env.SERECTKEY);
         req.tokenData = decoded;
-        next()
+        next(decoded)
     }catch(error){
         console.log('error', error);
         return res.status(401).json({

@@ -1,6 +1,6 @@
 const Joi = require('joi');
 const userModel = require('../models/users.model');
-const Auth = require('../common/token');
+const Auth = require('../middleware/token');
 const bcrypt = require('bcrypt');
 
 const userLogin = async(req, res) => {
@@ -20,6 +20,7 @@ const userLogin = async(req, res) => {
     try{
         const existUser = await userModel.findOne({email: dataValidationWithJoi.email});
         const checkPassword = await bcrypt.compare(dataValidationWithJoi.password, existUser.Password);
+        dataValidationWithJoi.userId = existUser._id
         const token = await Auth.createToken(dataValidationWithJoi);
         if(checkPassword){
             return res.status(200).send({
