@@ -42,6 +42,11 @@
 ### To install mongoose :-- 
 - npm install mongoose 
 
+## How to run project 
+- git clone https://github.com/sarmisthamaity/InfiStackAssigTask.git
+- cd InfiStackAssigTask
+- npm install 
+
 ### To start server :--- npm start 
 
 - Run signup api :--- localhost:8080/signup 
