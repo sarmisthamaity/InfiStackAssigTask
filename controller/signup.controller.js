@@ -3,6 +3,7 @@ const userModel = require('../models/users.model');
 const Joi = require('joi');
 const bcrypt = require('bcrypt');
 const salt = process.env.ROUNDSALT
+const mobileNumber = require('../common/mobile');
 
 const userSignUp = async(req, res) => {
     const files = req.files;
@@ -22,9 +23,14 @@ const userSignUp = async(req, res) => {
         gender: Joi.string().required(),
         Dob: Joi.date().required(),
         Qualification: Joi.string().alphanum().required(),
-        phonenumber: Joi.string().required().max(10).min(10)
     });
-
+    const validatedmobileNumber = await mobileNumber.regexPhoneNumber(req.body.phonenumber);
+    if(validatedmobileNumber == "invalid"){
+        return res.status(300).send({
+            status: 300,
+            message: 'invalid mobile number'
+        });
+    }
     const data = {
         userName: datas.userName,
         email: datas.email,
@@ -32,7 +38,6 @@ const userSignUp = async(req, res) => {
         gender: datas.gender,
         Dob: datas.Dob,
         Qualification: datas.Qualification,
-        phonenumber: datas.phonenumber
     };
     let SchemaValidation = userSchema.validate(data);
     if(SchemaValidation.error){
@@ -53,6 +58,7 @@ const userSignUp = async(req, res) => {
         } else{
         };
         const hashpassword = await bcrypt.hash(SchemaValidation.Password, 12);
+        
         const userData = {
             userName: SchemaValidation.userName,
             email: SchemaValidation.email,
@@ -60,7 +66,7 @@ const userSignUp = async(req, res) => {
             gender: SchemaValidation.gender,
             Dob: SchemaValidation.Dob,
             Qualification: SchemaValidation.Qualification,
-            phonenumber: SchemaValidation.phonenumber,
+            phonenumber: validatedmobileNumber,
             profilePicture: datas.profilePicture,
             image: datas.image
         };
